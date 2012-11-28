@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Mon jeu de la mort qui tue</title>
+<style>
+	body{text-align: center;}
+</style>
+<script src="vendor/gamepad.js-master/gamepad.js" type="text/javascript"></script>
+<script src="vendor/EaselJS-master/lib/easeljs-0.5.0.min.js"></script>
+<script>
+	window.onload = function()
+    {
+		init();
+		if(canvas.getContext)
+		{
+			document.body.onkeydown = function(event)
+			{
+				if(event.keyCode == 37 && !pressKey)
+				{
+					pressKey = true;
+					bmpAnimation.direction = -90;
+				}
+				else if(event.keyCode == 39 && !pressKey)
+				{
+					pressKey = true;
+					bmpAnimation.direction = 90;
+				}
+			}
+			
+			document.body.onkeyup = function(event)
+			{
+				if(event.keyCode == 37)
+				{
+					bmpAnimation.gotoAndStop("walk_h");
+					pressKey = false;
+					firstPressKey = false;
+				}
+				else if(event.keyCode == 39)
+				{
+					bmpAnimation.gotoAndStop("walk");
+					pressKey = false;
+					firstPressKey = false;
+				}
+			}
+			//var ctx = canvas.getContext('2d');
+			//ctx.fillStyle='green';
+		}
+		else
+		{
+			alert('Canvas marche paaaaaaaaas...');
+		}
+	};
+    var canvas;
+    var stage;
+    var screen_width;
+    var screen_height;
+    var bmpAnimation;
+    var numberOfImagesLoaded = 0;
+    var imgMonsterARun = new Image();
+	var pressKey = false;
+	var firstPressKey = false;
+	var compteur = 0;
+
+    function init() 
+	{
+        canvas = document.getElementById("monCanvas");
+        imgMonsterARun.onload = handleImageLoad;
+        imgMonsterARun.onerror = handleImageError;
+        imgMonsterARun.src = "sprites/ryuwalk.png";
+    }
+	
+    function handleImageLoad(e)
+	{
+        numberOfImagesLoaded++;
+        if (numberOfImagesLoaded == 1)
+		{
+            numberOfImagesLoaded = 0;
+            startGame();
+        }
+    }
+
+    function reset()
+	{
+        stage.removeAllChildren();
+        createjs.Ticker.removeAllListeners();
+        stage.update();
+    }
+
+    function startGame()
+	{
+        stage = new createjs.Stage(canvas);
+        screen_width = canvas.width;
+        screen_height = canvas.height;
+        var spriteSheet = new createjs.SpriteSheet(
+		{
+            images: [imgMonsterARun],
+            frames: { width: 50, height: 110, regX: 32, regY: 32 },
+            animations: 
+			{
+                walk: [0, 4, "walk", 4]
+            }
+        });
+        createjs.SpriteSheetUtils.addFlippedFrames(spriteSheet, true, false, false);
+        bmpAnimation = new createjs.BitmapAnimation(spriteSheet);
+        bmpAnimation.regX = bmpAnimation.spriteSheet.frameWidth / 2 | 0;
+        bmpAnimation.regY = bmpAnimation.spriteSheet.frameHeight / 2 | 0;
+        bmpAnimation.name = "ryu";
+        bmpAnimation.direction = 90;
+        bmpAnimation.vX = 3;
+        bmpAnimation.vY = 0;
+        bmpAnimation.x = 32;
+        bmpAnimation.y = 400;
+        bmpAnimation.currentFrame = 10;
+        stage.addChild(bmpAnimation);
+        createjs.Ticker.addListener(window);
+        createjs.Ticker.useRAF = true;
+        createjs.Ticker.setFPS(30);
+    }
+	
+    function handleImageError(e)
+	{
+        console.log("Error Loading Image : " + e.target.src);
+    }
+	
+    function tick()
+	{
+		if(pressKey)
+		{
+			if(bmpAnimation.x >= screen_width - 16)
+			{
+				bmpAnimation.direction = -90;
+			}
+			if(bmpAnimation.x < 16) 
+			{
+				bmpAnimation.direction = 90;
+			}
+			if (bmpAnimation.direction == 90)
+			{
+				if(firstPressKey)
+				{
+					bmpAnimation.gotoAndPlay("walk");
+				}
+				else
+				{
+					bmpAnimation.x += bmpAnimation.vX;
+					bmpAnimation.y += bmpAnimation.vY;
+				}
+			}
+			else
+			{
+				if(firstPressKey)
+				{
+					bmpAnimation.gotoAndPlay("walk_h");
+				}
+				else
+				{
+					bmpAnimation.x -= bmpAnimation.vX;
+					bmpAnimation.y -= bmpAnimation.vY;
+				}
+			}
+			if(!firstPressKey)
+			{
+				compteur++;
+				compteur%=10;
+				if(compteur==0)
+				{
+					firstPressKey = true;
+				}
+			}
+			else
+			{
+				firstPressKey = false;
+			}
+			pressKey = false;
+		}
+		//ctx.fillRect(40,40,40,40);
+        stage.update();
+    }
+</script>
+</head>
+<body>
+	<div class="description">
+
+	</div>
+	<div class="canvasHolder">
+		<canvas id="monCanvas" width="800" height="500" style="background-color:white; border:1px solid black">
+            Canvas pas supporté. Dommage.
+        </canvas>
+	</div>
+</body>
+</html>
