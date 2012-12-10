@@ -46,7 +46,7 @@
         var self = this;
         this.intervalID = setInterval(function() {
                 return self.run();
-        }, 100);
+        }, 30);
     };
 
     Game.prototype.update = function() {
@@ -62,6 +62,11 @@
         this.characterTwo.draw(this.ctx, this.images);
         this.characterOne.stage.draw(this.ctx, this.images);
     };
+
+    Game.prototype.run = function() {
+        this.update();
+        this.draw();
+    }
 
     window.onload = function() {
         new Game();
