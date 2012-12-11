@@ -7,15 +7,19 @@
 
 "use strict";
 
-function Character() {
+function Character(ratio) {
     var _name,
         _sprite,
         _masque,
-        _positionX = 0, //Initial position
-        _positionY = 0, //Initial position
+        _spriteX = 0, 
+        _spriteY = 0,
         _stage = new Stage(),
         _life = 100,
         _weight = 60,
+        _height = parseFloat((9*window.innerHeight)/10 * ratio),
+        _width = _height * (403/622),
+        _positionX = 0, //Initial position
+        _positionY = (9*window.innerHeight)/10 - _height, //Initial position
         _combo,
         _handicap;
 
@@ -60,6 +64,22 @@ function Character() {
                 _positionY = positionY;
             }
         },
+        spriteX:{
+            get:function () {
+                return _spriteX;
+            },
+            set:function (spriteX) {
+                _spriteX = spriteX;
+            }
+        },
+        spriteY:{
+            get:function () {
+                return _spriteY;
+            },
+            set:function (spriteY) {
+                _spriteY = spriteY;
+            }
+        },
         stage:{
             get:function () {
                 return _stage;
@@ -81,6 +101,22 @@ function Character() {
                 _weight = weight;
             }
         },
+        height:{
+            get:function () {
+                return _height;
+            },
+            set:function (height) {
+                _height = height;
+            }
+        },
+        width:{
+            get:function () {
+                return _width;
+            },
+            set:function (width) {
+                _width = width;
+            }
+        },
         combo:{
             get:function () {
                 return _combo;
@@ -100,11 +136,21 @@ function Character() {
     });
 }
 
+
+
+Character.prototype.moveLeft = function() {
+    this.positionX -= 5;
+};
+
+Character.prototype.moveRight = function() {
+    this.positionX += 5;
+};
+
 Character.prototype.update = function () {
 
 };
 
-Character.prototype.draw = function (context) {
-
+Character.prototype.draw = function (context, image) {
+    context.drawImage(image,403*this.spriteX, 622*this.spriteY, 403, 622, this.positionX, this.positionY, this.width, this.height);
 };
 

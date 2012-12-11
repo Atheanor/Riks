@@ -10,8 +10,8 @@
 
     "use strict";
 
-    var CANVAS_WIDTH = 450;        //px
-    var CANVAS_HEIGHT = 650;       //px
+    var CANVAS_WIDTH = window.innerWidth;        //px
+    var CANVAS_HEIGHT = window.innerHeight;       //px
     var GAME_WIDTH = CANVAS_WIDTH; //px
     var GAME_HEIGHT = 530;         //px
 
@@ -19,16 +19,16 @@
         var canvas = document.getElementById("riksCanvas");
         canvas.width = CANVAS_WIDTH;
         canvas.height = CANVAS_HEIGHT;
-        this.context = canvas.getContext('2d');
-        this.characterOne = new Character(); //TODO We initialized here and it will be defined in characterMenu()
-        this.characterTwo = new Character();
+        this.ctx = canvas.getContext('2d');
+        this.characterOne = new Character(0.9); //TODO We initialized here and it will be defined in characterMenu()
+        //this.characterTwo = new Character();
 
 
-        this.ressourcesLoader(['imagepng1', 'imagepng2']);
+        this.ressourcesLoader(['Ryu']);
     }
 
     Game.prototype.ressourcesLoader = function(ressources) {
-        this.images = Array();
+        this.images = [];
         var ressourcesLength = ressources.length;
         for (var i = 0; i < ressources.length; i++) {
             this.images[ressources[i]] = new Image();
@@ -38,7 +38,7 @@
                     return self.launchLoop();
                 }
             };
-            this.images[ressources[i]].src = "./img/" + ressources[i] + ".png";
+            this.images[ressources[i]].src = "./sprites/" + ressources[i] + ".png";
         }
     };
 
@@ -46,21 +46,21 @@
         var self = this;
         this.intervalID = setInterval(function() {
                 return self.run();
-        }, 30);
+        }, 2000);
     };
 
     Game.prototype.update = function() {
         this.characterOne.update();
-        this.characterTwo.update();
-        this.characterOne.stage.update();
+        //this.characterTwo.update();
+        //this.characterOne.stage.update();
 
 
     };
 
     Game.prototype.draw = function() {
-        this.characterOne.draw(this.ctx, this.images);
-        this.characterTwo.draw(this.ctx, this.images);
-        this.characterOne.stage.draw(this.ctx, this.images);
+        this.characterOne.draw(this.ctx, this.images['Ryu']);
+        //this.characterTwo.draw(this.ctx, this.images);
+        //this.characterOne.stage.draw(this.ctx, this.images);
     };
 
     Game.prototype.run = function() {
@@ -70,5 +70,26 @@
 
     window.onload = function() {
         new Game();
+        document.body.width = window.innerWidth;
+
+        document.onkeydown = function(event)
+        {
+
+            switch(event.keyCode)
+            {
+                /* left */
+                case 37 :
+                    this.characterOne.moveLeft();
+                break;
+
+                /* right */
+                case 39 :
+                    this.characterOne.moveRight();
+                break;
+            }
+
+        
+    }
+
     };
 })();
