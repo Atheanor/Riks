@@ -19,12 +19,35 @@
         var canvas = document.getElementById("riksCanvas");
         canvas.width = CANVAS_WIDTH;
         canvas.height = CANVAS_HEIGHT;
+        this.keyListener();
         this.ctx = canvas.getContext('2d');
         this.characterOne = new Character(0.9); //TODO We initialized here and it will be defined in characterMenu()
         //this.characterTwo = new Character();
 
 
         this.ressourcesLoader(['Ryu']);
+    }
+
+    Game.prototype.keyListener = function() {
+        var self = this;
+
+        document.onkeydown = function(event)
+        {
+            switch(event.keyCode)
+            {
+                /* left */
+                case 37 :
+                    self.characterOne.moveLeft();
+                break;
+
+                /* right */
+                case 39 :
+                    self.characterOne.moveRight();
+                break;
+            }
+
+        
+        }
     }
 
     Game.prototype.ressourcesLoader = function(ressources) {
@@ -46,7 +69,7 @@
         var self = this;
         this.intervalID = setInterval(function() {
                 return self.run();
-        }, 2000);
+        }, 30);
     };
 
     Game.prototype.update = function() {
@@ -68,28 +91,9 @@
         this.draw();
     }
 
+
+
     window.onload = function() {
         new Game();
-        document.body.width = window.innerWidth;
-
-        document.onkeydown = function(event)
-        {
-
-            switch(event.keyCode)
-            {
-                /* left */
-                case 37 :
-                    this.characterOne.moveLeft();
-                break;
-
-                /* right */
-                case 39 :
-                    this.characterOne.moveRight();
-                break;
-            }
-
-        
-    }
-
     };
 })();
