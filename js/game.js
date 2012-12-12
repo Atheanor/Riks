@@ -19,7 +19,11 @@
         var canvas = document.getElementById("riksCanvas");
         canvas.width = CANVAS_WIDTH;
         canvas.height = CANVAS_HEIGHT;
-        this.keyListener();
+		if(Gamepad.supported){
+			this.gamepadListener();
+		}else{
+			this.keyListener();
+		}
         this.ctx = canvas.getContext('2d');
         this.characterOne = new Character(0.9); //TODO We initialized here and it will be defined in characterMenu()
         //this.characterTwo = new Character();
@@ -48,6 +52,61 @@
 
         
         }
+    }
+	
+	Game.prototype.gamepadListener = function() {
+        var self = this;
+
+        if ( !window.requestAnimationFrame ) {
+            window.requestAnimationFrame = ( function() {
+                return window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
+                    window.setTimeout( callback, 1000 / 60 );
+                };
+            })();
+        }
+
+        var names = [
+            'leftStick',
+            'rightStick',
+            'faceButton0',
+            'faceButton1',
+            'faceButton2',
+            'faceButton3',
+            'leftShoulder0',
+            'rightShoulder0',
+            'leftShoulder1',
+            'rightShoulder1',
+            'select',
+            'start',
+            'leftStickButton',
+            'rightStickButton',
+            'dpadUp',
+            'dpadDown',
+            'dpadLeft',
+            'dpadRight'
+        ];
+
+        function update() {
+            window.requestAnimationFrame(update);
+
+            var pads = Gamepad.getStates();
+            for (var i = 0; i < pads.length; ++i) {
+                var pad = pads[i];
+                if (pad) {
+					if(pad.leftStickX<-0.5) {
+						self.characterOne.moveLeft();
+					}
+					if(pad.leftStickX>0.5) {
+						self.characterOne.moveRight();
+					}
+                }
+            }
+        }
+		update();
     }
 
     Game.prototype.ressourcesLoader = function(ressources) {
