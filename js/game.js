@@ -10,8 +10,8 @@
 
     "use strict";
 
-    var CANVAS_WIDTH = window.innerWidth;        //px
-    var CANVAS_HEIGHT = window.innerHeight;       //px
+    var CANVAS_WIDTH = window.innerWidth;     //px
+    var CANVAS_HEIGHT = window.innerHeight;   //px
     var GAME_WIDTH = CANVAS_WIDTH; //px
     var GAME_HEIGHT = 530;         //px
 
@@ -19,16 +19,14 @@
         var canvas = document.getElementById("riksCanvas");
         canvas.width = CANVAS_WIDTH;
         canvas.height = CANVAS_HEIGHT;
-		if(Gamepad.supported){
-			this.gamepadListener();
-		}else{
-			this.keyListener();
-		}
+        if (Gamepad.supported) {
+            this.gamepadListener();
+        } else {
+            this.keyListener();
+        }
         this.ctx = canvas.getContext('2d');
-        this.characterOne = new Character(0.9); //TODO We initialized here and it will be defined in characterMenu()
+        this.characterOne = new Character(/*ratio*/0.7);
         //this.characterTwo = new Character();
-
-
         this.ressourcesLoader(['Ryu']);
     }
 
@@ -37,35 +35,35 @@
 
         document.onkeydown = function(event)
         {
-            switch(event.keyCode)
+            switch (event.keyCode)
             {
                 /* left */
                 case 37 :
                     self.characterOne.moveLeft();
-                break;
+                    break;
 
-                /* right */
+                    /* right */
                 case 39 :
                     self.characterOne.moveRight();
-                break;
+                    break;
             }
 
-        
-        }
-    }
-	
-	Game.prototype.gamepadListener = function() {
+
+        };
+    };
+
+    Game.prototype.gamepadListener = function() {
         var self = this;
 
-        if ( !window.requestAnimationFrame ) {
-            window.requestAnimationFrame = ( function() {
+        if (!window.requestAnimationFrame) {
+            window.requestAnimationFrame = (function() {
                 return window.webkitRequestAnimationFrame ||
-                window.mozRequestAnimationFrame ||
-                window.oRequestAnimationFrame ||
-                window.msRequestAnimationFrame ||
-                function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
-                    window.setTimeout( callback, 1000 / 60 );
-                };
+                        window.mozRequestAnimationFrame ||
+                        window.oRequestAnimationFrame ||
+                        window.msRequestAnimationFrame ||
+                        function(/* function FrameRequestCallback */callback, /* DOMElement Element */element) {
+                            window.setTimeout(callback, 1000 / 60);
+                        };
             })();
         }
 
@@ -97,17 +95,17 @@
             for (var i = 0; i < pads.length; ++i) {
                 var pad = pads[i];
                 if (pad) {
-					if(pad.leftStickX<-0.5) {
-						self.characterOne.moveLeft();
-					}
-					if(pad.leftStickX>0.5) {
-						self.characterOne.moveRight();
-					}
+                    if (pad.leftStickX < -0.5) {
+                        self.characterOne.moveLeft();
+                    }
+                    if (pad.leftStickX > 0.5) {
+                        self.characterOne.moveRight();
+                    }
                 }
             }
         }
-		update();
-    }
+        update();
+    };
 
     Game.prototype.ressourcesLoader = function(ressources) {
         this.images = [];
@@ -127,7 +125,7 @@
     Game.prototype.launchLoop = function() {
         var self = this;
         this.intervalID = setInterval(function() {
-                return self.run();
+            return self.run();
         }, 30);
     };
 
@@ -135,8 +133,6 @@
         this.characterOne.update();
         //this.characterTwo.update();
         //this.characterOne.stage.update();
-
-
     };
 
     Game.prototype.draw = function() {
@@ -148,10 +144,11 @@
     Game.prototype.run = function() {
         this.update();
         this.draw();
-    }
+    };
 
-
-
+    //
+    //LaunchGame
+    //
     window.onload = function() {
         new Game();
     };

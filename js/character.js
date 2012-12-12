@@ -136,8 +136,6 @@ function Character(ratio) {
     });
 }
 
-
-
 Character.prototype.moveLeft = function() {
     this.positionX -= 5;
 };
@@ -146,12 +144,12 @@ Character.prototype.moveRight = function() {
     this.positionX += 5;
 };
 
-Character.prototype.update = function () {
+Character.prototype.update = function() {
 
 };
 
-Character.prototype.draw = function (context, image) {
-    context.clearRect(0,0,window.innerWidth, window.innerHeight);
-    context.drawImage(image,403*this.spriteX, 622*this.spriteY, 403, 622, this.positionX, this.positionY, this.width, this.height);
+Character.prototype.draw = function(context, image) {
+    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    context.drawImage(image, 403 * this.spriteX, 622 * this.spriteY, 403, 622, this.positionX, this.positionY, this.width, this.height);
 };
 
