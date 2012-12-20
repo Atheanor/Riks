@@ -19,93 +19,20 @@
         var canvas = document.getElementById("riksCanvas");
         canvas.width = CANVAS_WIDTH;
         canvas.height = CANVAS_HEIGHT;
-        if (Gamepad.supported) {
-            this.gamepadListener();
-        } else {
-            this.keyListener();
-        }
         this.ctx = canvas.getContext('2d');
+
+        //TODO: Need to moved. 
+        this.ctx.font = "50pt Times";
+        this.ctx.fillStyle = 'black';
+        this.ctx.fillText("Loading...", 10, CANVAS_HEIGHT / 2);
+
         this.characterOne = new Character(/*ratio*/0.7);
-        //this.characterTwo = new Character();
-        this.ressourcesLoader(['Ryu']);
+        new Input(this.characterOne);
+        //this.characterTwo = new Character(/*ratio*/0.7);
+
+        var ressources = ['Ryu'];
+        this.ressourcesLoader(ressources);
     }
-
-    Game.prototype.keyListener = function() {
-        var self = this;
-
-        document.onkeydown = function(event)
-        {
-            switch (event.keyCode)
-            {
-                /* left */
-                case 37 :
-                    self.characterOne.moveLeft();
-                    break;
-
-                    /* right */
-                case 39 :
-                    self.characterOne.moveRight();
-                    break;
-            }
-
-
-        };
-    };
-
-    Game.prototype.gamepadListener = function() {
-        var self = this;
-
-        if (!window.requestAnimationFrame) {
-            window.requestAnimationFrame = (function() {
-                return window.webkitRequestAnimationFrame ||
-                        window.mozRequestAnimationFrame ||
-                        window.oRequestAnimationFrame ||
-                        window.msRequestAnimationFrame ||
-                        function(/* function FrameRequestCallback */callback, /* DOMElement Element */element) {
-                            window.setTimeout(callback, 1000 / 60);
-                        };
-            })();
-        }
-
-        var names = [
-            'leftStick',
-            'rightStick',
-            'faceButton0',
-            'faceButton1',
-            'faceButton2',
-            'faceButton3',
-            'leftShoulder0',
-            'rightShoulder0',
-            'leftShoulder1',
-            'rightShoulder1',
-            'select',
-            'start',
-            'leftStickButton',
-            'rightStickButton',
-            'dpadUp',
-            'dpadDown',
-            'dpadLeft',
-            'dpadRight'
-        ];
-
-        function update() {
-            window.requestAnimationFrame(update);
-
-            var pads = Gamepad.getStates();
-            for (var i = 0; i < pads.length; ++i) {
-                var pad = pads[i];
-                if (pad) {
-                    if (pad.leftStickX < -0.5) {
-                        self.characterOne.moveLeft();
-                    }
-                    if (pad.leftStickX > 0.5) {
-                        self.characterOne.moveRight();
-                    }
-                }
-            }
-        }
-        update();
-    };
 
     Game.prototype.ressourcesLoader = function(ressources) {
         this.images = [];
@@ -129,6 +56,11 @@
         }, 30);
     };
 
+    Game.prototype.run = function() {
+        this.update();
+        this.draw();
+    };
+
     Game.prototype.update = function() {
         this.characterOne.update();
         //this.characterTwo.update();
@@ -139,11 +71,6 @@
         this.characterOne.draw(this.ctx, this.images['Ryu']);
         //this.characterTwo.draw(this.ctx, this.images);
         //this.characterOne.stage.draw(this.ctx, this.images);
-    };
-
-    Game.prototype.run = function() {
-        this.update();
-        this.draw();
     };
 
     //
