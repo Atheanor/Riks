@@ -45,7 +45,7 @@
                     return self.launchLoop();
                 }
             };
-            this.images[ressources[i]].src = "./sprites/" + ressources[i] + ".png";
+            this.images[ressources[i]].src = "./img/sprites/" + ressources[i] + ".png";
         }
     };
 
