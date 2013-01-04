@@ -19,5 +19,5 @@
     MainMenu.prototype.draw = function(context) {
 
     };
-
+  
 });

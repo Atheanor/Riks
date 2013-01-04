@@ -73,10 +73,24 @@
         //this.characterOne.stage.draw(this.ctx, this.images);
     };
 
-    //
-    //LaunchGame
-    //
-    window.onload = function() {
+    function initCanvas() {
+        var canvas = document.getElementById("riksCanvas");
+        canvas.width = CANVAS_WIDTH;
+        canvas.height = CANVAS_HEIGHT;
+        this.ctx = canvas.getContext('2d');
+    }
+
+    /*
+    **LaunchGame
+    */
+    document.getElementById('launch-solo-game').onclick = function() {
+        document.getElementById('menu').style.display = 'none';
+        document.getElementById('background-menu').style.display = 'none';
         new Game();
-    };
+    }
+
+    window.onload = function() {
+        initCanvas();
+    }
+
 })();
