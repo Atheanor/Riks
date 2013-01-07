@@ -16,23 +16,36 @@
     var GAME_HEIGHT = 530;         //px
 
     function Game() {
+        var menu = new MainMenu(),
+            self = this;
+        
+        self.initCanvas();
+        
+        menu.getMenuHtmlElement().onclick = function() {
+            menu.hide();
+            
+            self.initGame();
+        };
+    }
+
+    Game.prototype.initCanvas = function() {
         var canvas = document.getElementById("riksCanvas");
         canvas.width = CANVAS_WIDTH;
         canvas.height = CANVAS_HEIGHT;
         this.ctx = canvas.getContext('2d');
-
         //TODO: Need to moved. 
         this.ctx.font = "50pt Times";
         this.ctx.fillStyle = 'black';
         this.ctx.fillText("Loading...", 10, CANVAS_HEIGHT / 2);
+    };
 
+    Game.prototype.initGame = function() {
         this.characterOne = new Character(/*ratio*/0.7, new Movement());
         new Input(this.characterOne);
         //this.characterTwo = new Character(/*ratio*/0.7);
-
         var ressources = ['Ryu'];
         this.ressourcesLoader(ressources);
-    }
+    };
 
     Game.prototype.ressourcesLoader = function(ressources) {
         this.images = [];
@@ -73,24 +86,13 @@
         //this.characterOne.stage.draw(this.ctx, this.images);
     };
 
-    function initCanvas() {
-        var canvas = document.getElementById("riksCanvas");
-        canvas.width = CANVAS_WIDTH;
-        canvas.height = CANVAS_HEIGHT;
-        this.ctx = canvas.getContext('2d');
-    }
+
 
     /*
-    **LaunchGame
-    */
-    document.getElementById('launch-solo-game').onclick = function() {
-        document.getElementById('menu').style.display = 'none';
-        document.getElementById('background-menu').style.display = 'none';
-        new Game();
-    }
-
+     **LaunchGame
+     */
     window.onload = function() {
-        initCanvas();
-    }
+        new Game();
+    };
 
 })();

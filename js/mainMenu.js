@@ -5,19 +5,22 @@
  * 126752 Germain Chapot
  */
 
-(function() {
-    "use strict";
 
-    function MainMenu() {
+"use strict";
 
-    }
+function MainMenu() {
 
-    MainMenu.prototype.update = function() {
+}
 
-    };
+MainMenu.prototype.getMenuHtmlElement = function() {
+    return document.getElementById('launch-solo-game');
+};
 
-    MainMenu.prototype.draw = function(context) {
+MainMenu.prototype.update = function() {
 
-    };
-  
-});
+};
+
+MainMenu.prototype.hide = function() {
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('background-menu').style.display = 'none';
+};
