@@ -7,19 +7,24 @@
 
 "use strict";
 
-function Character(ratio) {
+function Character(ratio, movement) {
     var _name,
         _sprite,
         _masque,
         _spriteX = 0, 
         _spriteY = 0,
         _stage = new Stage(),
+        _isMoving = false,
         _life = 100,
         _weight = 60,
+        _widthSprite = 485,
+        _heightSprite = 670,
         _height = parseFloat((9*window.innerHeight)/10 * ratio),
-        _width = _height * (403/622),
+        _width = _height * (_widthSprite/_heightSprite),
         _positionX = 0, //Initial position
         _positionY = (9*window.innerHeight)/10 - _height, //Initial position
+        _movement = movement,
+        _movementDone = true,
         _combo,
         _handicap;
 
@@ -85,6 +90,14 @@ function Character(ratio) {
                 return _stage;
             }
         },
+        isMoving:{
+            get:function () {
+                return _isMoving;
+            },
+            set:function (isMoving) {
+                _isMoving = isMoving;
+            }
+        },
         life:{
             get:function () {
                 return _life;
@@ -101,6 +114,23 @@ function Character(ratio) {
                 _weight = weight;
             }
         },
+
+        heightSprite:{
+            get:function () {
+                return _heightSprite;
+            },
+            set:function (height) {
+                _heightSprite = heightSprite;
+            }
+        },
+        widthSprite:{
+            get:function () {
+                return _widthSprite;
+            },
+            set:function (width) {
+                _widthSprite = widthSprite;
+            }
+        },
         height:{
             get:function () {
                 return _height;
@@ -115,6 +145,22 @@ function Character(ratio) {
             },
             set:function (width) {
                 _width = width;
+            }
+        },
+        movement:{
+            get:function () {
+                return _movement;
+            },
+            set:function (movement) {
+                _movement = movement;
+            }
+        },
+        movementDone:{
+            get:function () {
+                return _movementDone;
+            },
+            set:function (movementDone) {
+                _movementDone = movementDone;
             }
         },
         combo:{
@@ -137,19 +183,57 @@ function Character(ratio) {
 }
 
 Character.prototype.moveLeft = function() {
+    this.isMoving = true;
     this.positionX -= 5;
 };
 
 Character.prototype.moveRight = function() {
+    this.isMoving = true;
     this.positionX += 5;
+    this.doMovement(this.movement.walkRight);
+};
+
+Character.prototype.wait = function()
+{
+    this.isMoving = false;
+    this.doMovement(this.movement.waitRight);
 };
 
 Character.prototype.update = function() {
-
+    if(!this.isMoving && this.movementDone)
+    {
+        this.doMovement(this.movement.waitRight);
+    }
 };
 
 Character.prototype.draw = function(context, image) {
     context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    context.drawImage(image, 403 * this.spriteX, 622 * this.spriteY, 403, 622, this.positionX, this.positionY, this.width, this.height);
+    context.drawImage(image, this.widthSprite * this.spriteX, this.heightSprite * this.spriteY, this.widthSprite, this.heightSprite, this.positionX, this.positionY, this.width, this.height);
+};
+
+Character.prototype.doMovement = function(movement)
+{
+    var self = this;
+    if(this.movementDone)
+    {
+        this.movementDone = false;
+        this.spriteX = movement[0];
+        this.spriteY = movement[1]; 
+    }
+    for(var i = 1 ; i < movement[2] ; i++)
+    {
+
+        setTimeout(function(){
+            self.refreshMovement(movement);
+        },i*200);
+    }
+
+};
+
+Character.prototype.refreshMovement = function(movement)
+{
+    var self = this;
+    if(++this.spriteX == movement[0] + movement[2] - 1)
+        setTimeout(function(){ self.movementDone = true;},200);
 };
 

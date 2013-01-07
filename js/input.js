@@ -39,6 +39,15 @@ Input.prototype.keyListener = function() {
                 break;
         }
     };
+
+    document.onkeyup = function(event)
+    {
+        switch (event.keyCode)
+        {
+            default : 
+                self.character.wait();
+        }
+    };
 };
 
 Input.prototype.gamepadListener = function() {

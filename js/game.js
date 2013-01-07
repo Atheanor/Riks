@@ -26,7 +26,7 @@
         this.ctx.fillStyle = 'black';
         this.ctx.fillText("Loading...", 10, CANVAS_HEIGHT / 2);
 
-        this.characterOne = new Character(/*ratio*/0.7);
+        this.characterOne = new Character(/*ratio*/0.7, new Movement());
         new Input(this.characterOne);
         //this.characterTwo = new Character(/*ratio*/0.7);
 
