@@ -40,11 +40,15 @@
     };
 
     Game.prototype.initGame = function() {
-        this.characterOne = new Character(/*ratio*/0.7, new Movement());
+		var self = this;
+        this.characterOne = new Character(/*ratio*/0.7);
         new Input(this.characterOne);
         //this.characterTwo = new Character(/*ratio*/0.7);
         var ressources = ['Ryu'];
         this.ressourcesLoader(ressources);
+		setInterval(function() {
+            return self.draw();
+        }, 30);
     };
 
     Game.prototype.ressourcesLoader = function(ressources) {
@@ -66,12 +70,11 @@
         var self = this;
         this.intervalID = setInterval(function() {
             return self.run();
-        }, 30);
+        }, 150);
     };
 
     Game.prototype.run = function() {
         this.update();
-        this.draw();
     };
 
     Game.prototype.update = function() {
@@ -81,12 +84,11 @@
     };
 
     Game.prototype.draw = function() {
+		this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+		this.characterOne.stage.draw(this.ctx);
         this.characterOne.draw(this.ctx, this.images['Ryu']);
         //this.characterTwo.draw(this.ctx, this.images);
-        //this.characterOne.stage.draw(this.ctx, this.images);
     };
-
-
 
     /*
      **LaunchGame

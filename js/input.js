@@ -16,37 +16,33 @@ Input.prototype.eval = function() {
     // TODO: Do something better because it's block firefox with gamepad, 
     // you need to verify if gamepas api is supported and if a gamepad is connected
     // 
-    //if (Gamepad.supported) {
-    //    this.gamepadListener();
-    //} else {
+    if (Gamepad.supported) {
+        this.gamepadListener();
+    }
+	else {
         this.keyListener();
-    //}
+    }
 };
 
 Input.prototype.keyListener = function() {
     var self = this;
-
     document.onkeydown = function(event) {
-        switch (event.keyCode) {
-            /* left */
-            case 37 :
-                self.character.moveLeft();
-                break;
+		switch (event.keyCode) {
+			/* left */
+			case 37 :
+				self.character.direction = "left";
+				self.character.isMoving = true;
+				break;
 
-                /* right */
-            case 39 :
-                self.character.moveRight();
-                break;
-        }
-    };
-
-    document.onkeyup = function(event)
-    {
-        switch (event.keyCode)
-        {
-            default : 
-                self.character.wait();
-        }
+			/* right */
+			case 39 :
+				self.character.direction = "right";
+				self.character.isMoving = true;
+				break;
+				
+			default:
+				break;
+		}
     };
 };
 
@@ -94,10 +90,12 @@ Input.prototype.gamepadListener = function() {
             var pad = pads[i];
             if (pad) {
                 if (pad.leftStickX < -0.5) {
-                    self.character.moveLeft();
+                    self.character.direction = "left";
+					self.character.isMoving = true;
                 }
                 if (pad.leftStickX > 0.5) {
-                    self.character.moveRight();
+                    self.character.direction = "right";
+					self.character.isMoving = true;
                 }
             }
         }

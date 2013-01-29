@@ -7,14 +7,15 @@
 
 "use strict";
 
-function Character(ratio, movement) {
+function Character(ratio) {
     var _name,
         _sprite,
         _masque,
-        _spriteX = 0, 
+        _spriteX = 0,
         _spriteY = 0,
-        _stage = new Stage(),
+        _stage = new Stage("background","foreground"),
         _isMoving = false,
+		_direction = "right",
         _life = 100,
         _weight = 60,
         _widthSprite = 485,
@@ -23,7 +24,7 @@ function Character(ratio, movement) {
         _width = _height * (_widthSprite/_heightSprite),
         _positionX = 0, //Initial position
         _positionY = (9*window.innerHeight)/10 - _height, //Initial position
-        _movement = movement,
+        _movement = new Movement(),
         _movementDone = true,
         _combo,
         _handicap;
@@ -96,6 +97,14 @@ function Character(ratio, movement) {
             },
             set:function (isMoving) {
                 _isMoving = isMoving;
+            }
+        },
+		direction:{
+            get:function () {
+                return _direction;
+            },
+            set:function (direction) {
+                _direction = direction;
             }
         },
         life:{
@@ -183,57 +192,63 @@ function Character(ratio, movement) {
 }
 
 Character.prototype.moveLeft = function() {
-    this.isMoving = true;
-    this.positionX -= 5;
+    if(this.positionX>0){
+		this.positionX -= 30;
+	}
+	else if(this.stage.posCamForX -30 > -this.stage.foreground.width/4){
+		this.stage.posCamForX -= 30;
+		this.stage.posCamBacX -= 5;
+	}
+	this.doMovement(this.movement.walkLeft);
 };
 
 Character.prototype.moveRight = function() {
-    this.isMoving = true;
-    this.positionX += 5;
+	if(this.positionX+this.width<window.innerWidth){
+		this.positionX += 30;
+	}
+	else if(this.stage.posCamForX + 30 < this.stage.foreground.width/4){
+		this.stage.posCamForX += 30;
+		this.stage.posCamBacX += 5;
+		console.log(this.stage.posCamForX+" "+ this.stage.foreground.width/4);
+	}
     this.doMovement(this.movement.walkRight);
 };
 
-Character.prototype.wait = function()
-{
-    this.isMoving = false;
-    this.doMovement(this.movement.waitRight);
+Character.prototype.wait = function() {
+	if(this.direction == "right") {
+		this.doMovement(this.movement.waitRight);
+	}
+	else {
+		this.doMovement(this.movement.waitLeft);
+	}
 };
 
 Character.prototype.update = function() {
-    if(!this.isMoving && this.movementDone)
-    {
-        this.doMovement(this.movement.waitRight);
+    if(!this.isMoving) {
+		this.wait();
     }
+	else {
+		if(this.direction == "right") {
+			this.moveRight();
+		}
+		else {
+			this.moveLeft();
+		}
+		this.isMoving = false;
+	}
 };
 
 Character.prototype.draw = function(context, image) {
-    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    context.drawImage(image, this.widthSprite * this.spriteX, this.heightSprite * this.spriteY, this.widthSprite, this.heightSprite, this.positionX, this.positionY, this.width, this.height);
+    context.drawImage(image, this.widthSprite * this.spriteX, this.heightSprite * this.spriteY, 
+	this.widthSprite, this.heightSprite, this.positionX, this.positionY, this.width, this.height);
 };
 
-Character.prototype.doMovement = function(movement)
-{
-    var self = this;
-    if(this.movementDone)
-    {
-        this.movementDone = false;
-        this.spriteX = movement[0];
-        this.spriteY = movement[1]; 
-    }
-    for(var i = 1 ; i < movement[2] ; i++)
-    {
-
-        setTimeout(function(){
-            self.refreshMovement(movement);
-        },i*200);
-    }
-
+Character.prototype.doMovement = function(movement) {
+	if(this.spriteX < movement[0] + movement[2] - 1 && this.spriteX >= movement[0]) {
+		this.spriteX++;
+	}
+	else {
+		this.spriteX = movement[0];
+        this.spriteY = movement[1];
+	}
 };
-
-Character.prototype.refreshMovement = function(movement)
-{
-    var self = this;
-    if(++this.spriteX == movement[0] + movement[2] - 1)
-        setTimeout(function(){ self.movementDone = true;},200);
-};
-
