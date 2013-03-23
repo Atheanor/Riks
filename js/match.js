@@ -9,61 +9,61 @@
 
 function Match(characterOne, characterTwo) {
     var _characterOne = characterOne,
-        _characterTwo = characterTwo,
-        _nbrRound = 3,
-        _time = 99, //Second
-        _winner;
+            _characterTwo = characterTwo,
+            _nbrRound = 3,
+            _time = 99, //Second
+            _winner;
 
     Object.defineProperties(this, {
-        characterOne:{
-            get:function () {
+        characterOne: {
+            get: function() {
                 return _characterOne;
             },
-            set:function (characterOne) {
+            set: function(characterOne) {
                 _characterOne = characterOne;
             }
         },
-        characterTwo:{
-            get:function () {
+        characterTwo: {
+            get: function() {
                 return _characterTwo;
             },
-            set:function (characterTwo) {
+            set: function(characterTwo) {
                 _characterTwo = characterTwo;
             }
         },
-        stage:{
-            get:function () {
+        stage: {
+            get: function() {
                 return _characterOne.stage;
             }
         },
-        nbrRound:{
-            get:function () {
+        nbrRound: {
+            get: function() {
                 return _nbrRound;
             },
-            set:function (nbrRound) {
+            set: function(nbrRound) {
                 _nbrRound = nbrRound;
             }
         },
-        time:{
-            get:function () {
+        time: {
+            get: function() {
                 return _time;
             },
-            set:function (time) {
+            set: function(time) {
                 _time = time;
             }
         },
-        winner:{
-            get:function () {
+        winner: {
+            get: function() {
                 return _winner;
             },
-            set:function (winner) {
+            set: function(winner) {
                 _winner = winner;
             }
         }
     });
 }
 
-Match.prototype.update = function () {
+Match.prototype.update = function() {
 
 };
 

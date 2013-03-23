@@ -9,182 +9,181 @@
 
 function Character(ratio) {
     var _name,
-        _sprite,
-        _masque,
-        _spriteX = 0,
-        _spriteY = 0,
-        _stage = new Stage("background","foreground"),
-        _isMoving = false,
-		_direction = "right",
-        _life = 100,
-        _weight = 60,
-        _widthSprite = 485,
-        _heightSprite = 670,
-        _height = parseFloat((9*window.innerHeight)/10 * ratio),
-        _width = _height * (_widthSprite/_heightSprite),
-        _positionX = 0, //Initial position
-        _positionY = (9*window.innerHeight)/10 - _height, //Initial position
-        _movement = new Movement(),
-        _movementDone = true,
-        _combo,
-        _handicap;
+            _sprite,
+            _masque,
+            _spriteX = 0,
+            _spriteY = 0,
+            _stage = new Stage("background", "foreground"),
+            _isMoving = false,
+            _direction = "right",
+            _life = 100,
+            _weight = 60,
+            _widthSprite = 485,
+            _heightSprite = 670,
+            _height = parseFloat((9 * window.innerHeight) / 10 * ratio),
+            _width = _height * (_widthSprite / _heightSprite),
+            _positionX = 0, //Initial position
+            _positionY = (9 * window.innerHeight) / 10 - _height, //Initial position
+            _movement = new Movement(),
+            _movementDone = true,
+            _combo,
+            _handicap;
 
     Object.defineProperties(this, {
-        name:{
-            get:function () {
+        name: {
+            get: function() {
                 return _name;
             },
-            set:function (name) {
+            set: function(name) {
                 _name = name;
             }
         },
-        sprite:{
-            get:function () {
+        sprite: {
+            get: function() {
                 return _sprite;
             },
-            set:function (sprite) {
+            set: function(sprite) {
                 _sprite = sprite;
             }
         },
-        masque:{
-            get:function () {
+        masque: {
+            get: function() {
                 return _masque;
             },
-            set:function (masque) {
+            set: function(masque) {
                 _masque = masque;
             }
         },
-        positionX:{
-            get:function () {
+        positionX: {
+            get: function() {
                 return _positionX;
             },
-            set:function (positionX) {
+            set: function(positionX) {
                 _positionX = positionX;
             }
         },
-        positionY:{
-            get:function () {
+        positionY: {
+            get: function() {
                 return _positionY;
             },
-            set:function (positionY) {
+            set: function(positionY) {
                 _positionY = positionY;
             }
         },
-        spriteX:{
-            get:function () {
+        spriteX: {
+            get: function() {
                 return _spriteX;
             },
-            set:function (spriteX) {
+            set: function(spriteX) {
                 _spriteX = spriteX;
             }
         },
-        spriteY:{
-            get:function () {
+        spriteY: {
+            get: function() {
                 return _spriteY;
             },
-            set:function (spriteY) {
+            set: function(spriteY) {
                 _spriteY = spriteY;
             }
         },
-        stage:{
-            get:function () {
+        stage: {
+            get: function() {
                 return _stage;
             }
         },
-        isMoving:{
-            get:function () {
+        isMoving: {
+            get: function() {
                 return _isMoving;
             },
-            set:function (isMoving) {
+            set: function(isMoving) {
                 _isMoving = isMoving;
             }
         },
-		direction:{
-            get:function () {
+        direction: {
+            get: function() {
                 return _direction;
             },
-            set:function (direction) {
+            set: function(direction) {
                 _direction = direction;
             }
         },
-        life:{
-            get:function () {
+        life: {
+            get: function() {
                 return _life;
             },
-            set:function (life) {
+            set: function(life) {
                 _life = life;
             }
         },
-        weight:{
-            get:function () {
+        weight: {
+            get: function() {
                 return _weight;
             },
-            set:function (weight) {
+            set: function(weight) {
                 _weight = weight;
             }
         },
-
-        heightSprite:{
-            get:function () {
+        heightSprite: {
+            get: function() {
                 return _heightSprite;
             },
-            set:function (height) {
+            set: function(height) {
                 _heightSprite = heightSprite;
             }
         },
-        widthSprite:{
-            get:function () {
+        widthSprite: {
+            get: function() {
                 return _widthSprite;
             },
-            set:function (width) {
+            set: function(width) {
                 _widthSprite = widthSprite;
             }
         },
-        height:{
-            get:function () {
+        height: {
+            get: function() {
                 return _height;
             },
-            set:function (height) {
+            set: function(height) {
                 _height = height;
             }
         },
-        width:{
-            get:function () {
+        width: {
+            get: function() {
                 return _width;
             },
-            set:function (width) {
+            set: function(width) {
                 _width = width;
             }
         },
-        movement:{
-            get:function () {
+        movement: {
+            get: function() {
                 return _movement;
             },
-            set:function (movement) {
+            set: function(movement) {
                 _movement = movement;
             }
         },
-        movementDone:{
-            get:function () {
+        movementDone: {
+            get: function() {
                 return _movementDone;
             },
-            set:function (movementDone) {
+            set: function(movementDone) {
                 _movementDone = movementDone;
             }
         },
-        combo:{
-            get:function () {
+        combo: {
+            get: function() {
                 return _combo;
             },
-            set:function (combo) {
+            set: function(combo) {
                 _combo = combo;
             }
         },
-        handicap:{
-            get:function () {
+        handicap: {
+            get: function() {
                 return _handicap;
             },
-            set:function (handicap) {
+            set: function(handicap) {
                 _handicap = handicap;
             }
         }
@@ -192,63 +191,63 @@ function Character(ratio) {
 }
 
 Character.prototype.moveLeft = function() {
-    if(this.positionX>0){
-		this.positionX -= 30;
-	}
-	else if(this.stage.posCamForX -30 > -this.stage.foreground.width/4){
-		this.stage.posCamForX -= 30;
-		this.stage.posCamBacX -= 5;
-	}
-	this.doMovement(this.movement.walkLeft);
+    if (this.positionX > 0) {
+        this.positionX -= 30;
+    }
+    else if (this.stage.posCamForX - 30 > -this.stage.foreground.width / 4) {
+        this.stage.posCamForX -= 30;
+        this.stage.posCamBacX -= 5;
+    }
+    this.doMovement(this.movement.walkLeft);
 };
 
 Character.prototype.moveRight = function() {
-	if(this.positionX+this.width<window.innerWidth){
-		this.positionX += 30;
-	}
-	else if(this.stage.posCamForX + 30 < this.stage.foreground.width/4){
-		this.stage.posCamForX += 30;
-		this.stage.posCamBacX += 5;
-		console.log(this.stage.posCamForX+" "+ this.stage.foreground.width/4);
-	}
+    if (this.positionX + this.width < window.innerWidth) {
+        this.positionX += 30;
+    }
+    else if (this.stage.posCamForX + 30 < this.stage.foreground.width / 4) {
+        this.stage.posCamForX += 30;
+        this.stage.posCamBacX += 5;
+        console.log(this.stage.posCamForX + " " + this.stage.foreground.width / 4);
+    }
     this.doMovement(this.movement.walkRight);
 };
 
 Character.prototype.wait = function() {
-	if(this.direction == "right") {
-		this.doMovement(this.movement.waitRight);
-	}
-	else {
-		this.doMovement(this.movement.waitLeft);
-	}
+    if (this.direction == "right") {
+        this.doMovement(this.movement.waitRight);
+    }
+    else {
+        this.doMovement(this.movement.waitLeft);
+    }
 };
 
 Character.prototype.update = function() {
-    if(!this.isMoving) {
-		this.wait();
+    if (!this.isMoving) {
+        this.wait();
     }
-	else {
-		if(this.direction == "right") {
-			this.moveRight();
-		}
-		else {
-			this.moveLeft();
-		}
-		this.isMoving = false;
-	}
+    else {
+        if (this.direction == "right") {
+            this.moveRight();
+        }
+        else {
+            this.moveLeft();
+        }
+        this.isMoving = false;
+    }
 };
 
 Character.prototype.draw = function(context, image) {
-    context.drawImage(image, this.widthSprite * this.spriteX, this.heightSprite * this.spriteY, 
-	this.widthSprite, this.heightSprite, this.positionX, this.positionY, this.width, this.height);
+    context.drawImage(image, this.widthSprite * this.spriteX, this.heightSprite * this.spriteY,
+            this.widthSprite, this.heightSprite, this.positionX, this.positionY, this.width, this.height);
 };
 
 Character.prototype.doMovement = function(movement) {
-	if(this.spriteX < movement[0] + movement[2] - 1 && this.spriteX >= movement[0]) {
-		this.spriteX++;
-	}
-	else {
-		this.spriteX = movement[0];
+    if (this.spriteX < movement[0] + movement[2] - 1 && this.spriteX >= movement[0]) {
+        this.spriteX++;
+    }
+    else {
+        this.spriteX = movement[0];
         this.spriteY = movement[1];
-	}
+    }
 };

@@ -17,13 +17,13 @@
 
     function Game() {
         var menu = new MainMenu(),
-            self = this;
-        
+                self = this;
+
         self.initCanvas();
-        
+
         menu.getMenuHtmlElement().onclick = function() {
             menu.hide();
-            
+
             self.initGame();
         };
     }
@@ -40,13 +40,13 @@
     };
 
     Game.prototype.initGame = function() {
-		var self = this;
+        var self = this;
         this.characterOne = new Character(/*ratio*/0.7);
         new Input(this.characterOne);
         //this.characterTwo = new Character(/*ratio*/0.7);
         var ressources = ['Ryu'];
         this.ressourcesLoader(ressources);
-		setInterval(function() {
+        setInterval(function() {
             return self.draw();
         }, 30);
     };
@@ -84,8 +84,8 @@
     };
 
     Game.prototype.draw = function() {
-		this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-		this.characterOne.stage.draw(this.ctx);
+        this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        this.characterOne.stage.draw(this.ctx);
         this.characterOne.draw(this.ctx, this.images['Ryu']);
         //this.characterTwo.draw(this.ctx, this.images);
     };

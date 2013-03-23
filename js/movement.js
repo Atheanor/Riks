@@ -10,53 +10,54 @@
 "use strict";
 
 function Movement() {
-	 
-	var	_waitRight = [],
-		_walkRight = [],
-		_waitLeft = [],
-		_walkLeft = [];
-		
-	Object.defineProperties(this, {
-		waitRight:{
-            get:function () {
+
+    var _waitRight = [],
+            _walkRight = [],
+            _waitLeft = [],
+            _walkLeft = [];
+
+    Object.defineProperties(this, {
+        waitRight: {
+            get: function() {
                 return _waitRight;
             },
-            set:function (waitRight) {
+            set: function(waitRight) {
                 _waitRight = waitRight;
             }
         },
-        walkRight:{
-            get:function () {
+        walkRight: {
+            get: function() {
                 return _walkRight;
             },
-            set:function (walkRight) {
+            set: function(walkRight) {
                 _walkRight = walkRight;
             }
         },
-		waitLeft:{
-            get:function () {
+        waitLeft: {
+            get: function() {
                 return _waitLeft;
             },
-            set:function (waitLeft) {
+            set: function(waitLeft) {
                 _waitLeft = waitLeft;
             }
         },
-        walkLeft:{
-            get:function () {
+        walkLeft: {
+            get: function() {
                 return _walkLeft;
             },
-            set:function (walkLeft) {
+            set: function(walkLeft) {
                 _walkLeft = walkLeft;
             }
         }
-	});
-	var _init = this.initMovement();
-};
+    });
+    var _init = this.initMovement();
+}
+;
 
-Movement.prototype.initMovement = function () {
-	/* An array has to look like this : [Line,Raw,Number of Sprite(s)] */
-	this.waitRight = [0,0,4];
-	this.waitLeft = [5,0,4];
-	this.walkRight = [0,1,4];
-	this.walkLeft = [5,1,4];
+Movement.prototype.initMovement = function() {
+    /* An array has to look like this : [Line,Raw,Number of Sprite(s)] */
+    this.waitRight = [0, 0, 4];
+    this.waitLeft = [5, 0, 4];
+    this.walkRight = [0, 1, 4];
+    this.walkLeft = [5, 1, 4];
 };
