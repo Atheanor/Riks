@@ -7,13 +7,11 @@
 
 "use strict";
 
-function Character(ratio) {
-    var _name,
-        _sprite,
-        _masque,
+function Character(name, ratio) {
+    var _name = name,
+		_img = new Image(),
         _spriteX = 0,
         _spriteY = 0,
-        _stage = new Stage("background","foreground"),
         _isMoving = false,
 		_direction = "right",
         _life = 100,
@@ -38,20 +36,20 @@ function Character(ratio) {
                 _name = name;
             }
         },
+		img:{
+            get:function () {
+                return _img;
+            },
+            set:function (img) {
+                _img = img;
+            }
+        },
         sprite:{
             get:function () {
                 return _sprite;
             },
             set:function (sprite) {
                 _sprite = sprite;
-            }
-        },
-        masque:{
-            get:function () {
-                return _masque;
-            },
-            set:function (masque) {
-                _masque = masque;
             }
         },
         positionX:{
@@ -123,7 +121,6 @@ function Character(ratio) {
                 _weight = weight;
             }
         },
-
         heightSprite:{
             get:function () {
                 return _heightSprite;
@@ -189,27 +186,19 @@ function Character(ratio) {
             }
         }
     });
+	this.img.src = "./img/sprites/"+this.name+".png";
 }
 
 Character.prototype.moveLeft = function() {
-    if(this.positionX>0){
+    if(this.positionX>0) {
 		this.positionX -= 30;
-	}
-	else if(this.stage.posCamForX -30 > -this.stage.foreground.width/4){
-		this.stage.posCamForX -= 30;
-		this.stage.posCamBacX -= 5;
 	}
 	this.doMovement(this.movement.walkLeft);
 };
 
 Character.prototype.moveRight = function() {
-	if(this.positionX+this.width<window.innerWidth){
+	if(this.positionX+this.width<window.innerWidth) {
 		this.positionX += 30;
-	}
-	else if(this.stage.posCamForX + 30 < this.stage.foreground.width/4){
-		this.stage.posCamForX += 30;
-		this.stage.posCamBacX += 5;
-		console.log(this.stage.posCamForX+" "+ this.stage.foreground.width/4);
 	}
     this.doMovement(this.movement.walkRight);
 };
@@ -238,8 +227,8 @@ Character.prototype.update = function() {
 	}
 };
 
-Character.prototype.draw = function(context, image) {
-    context.drawImage(image, this.widthSprite * this.spriteX, this.heightSprite * this.spriteY, 
+Character.prototype.draw = function(context) {
+    context.drawImage(this.img, this.widthSprite * this.spriteX, this.heightSprite * this.spriteY, 
 	this.widthSprite, this.heightSprite, this.positionX, this.positionY, this.width, this.height);
 };
 
@@ -252,3 +241,6 @@ Character.prototype.doMovement = function(movement) {
         this.spriteY = movement[1];
 	}
 };
+
+// NOTE : Code to flip image to draw below
+// ctx.translate(img.width-1, img.height-1);

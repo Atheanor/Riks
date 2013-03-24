@@ -1,11 +1,3 @@
-/* B3 2013 London - Riks - Html5 & JavaScript Experimentation
- * 118243 Léo Benoist
- * 125656 David Calmel
- * 126359 Alexis Vernot
- * 126752 Germain Chapot
- */
-
-
 (function() {
 
     "use strict";
@@ -33,68 +25,98 @@
         canvas.width = CANVAS_WIDTH;
         canvas.height = CANVAS_HEIGHT;
         this.ctx = canvas.getContext('2d');
-        //TODO: Need to moved. 
         this.ctx.font = "50pt Times";
         this.ctx.fillStyle = 'black';
-        this.ctx.fillText("Loading...", 10, CANVAS_HEIGHT / 2);
     };
 
     Game.prototype.initGame = function() {
-		var self = this;
-        this.characterOne = new Character(/*ratio*/0.7);
+        this.characterOne = new Character('Ryu',0.7);
+		this.characterTwo = new Character('Ryu',0.7);
+		this.characterOne.positionX = 200;
+		this.characterTwo.positionX = 800;
+		this.stage = new Stage('test');
         new Input(this.characterOne);
-        //this.characterTwo = new Character(/*ratio*/0.7);
-        var ressources = ['Ryu'];
-        this.ressourcesLoader(ressources);
-		setInterval(function() {
-            return self.draw();
-        }, 30);
-    };
-
-    Game.prototype.ressourcesLoader = function(ressources) {
-        this.images = [];
-        var ressourcesLength = ressources.length;
-        for (var i = 0; i < ressources.length; i++) {
-            this.images[ressources[i]] = new Image();
-            var self = this;
-            this.images[ressources[i]].onload = function() {
-                if (i === ressourcesLength) {
-                    return self.launchLoop();
-                }
-            };
-            this.images[ressources[i]].src = "./img/sprites/" + ressources[i] + ".png";
-        }
-    };
-
-    Game.prototype.launchLoop = function() {
-        var self = this;
-        this.intervalID = setInterval(function() {
-            return self.run();
-        }, 150);
-    };
-
-    Game.prototype.run = function() {
-        this.update();
+		this.images =
+		[
+			"./img/sprites/"+this.characterOne.name+".png",
+			"./img/backgrounds/"+this.stage.name+".jpg",
+			"./img/foregrounds/"+this.stage.name+".jpg"
+		];
+		this.percentageBar = 0;
+		/*this.totalImageSize = 0;
+		for(var i=0;i<this.images.length;i++) {
+			this.totalImageSize += this.size(this.images[i]);
+			console.log(this.size(this.images[i]));
+		}*/
+		this.load(0);
     };
 
     Game.prototype.update = function() {
         this.characterOne.update();
-        //this.characterTwo.update();
-        //this.characterOne.stage.update();
+		this.characterTwo.update();
+		this.stage.update(this.characterOne, this.characterTwo);
     };
 
     Game.prototype.draw = function() {
 		this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-		this.characterOne.stage.draw(this.ctx);
-        this.characterOne.draw(this.ctx, this.images['Ryu']);
-        //this.characterTwo.draw(this.ctx, this.images);
+        this.characterOne.draw(this.ctx);
+		this.characterTwo.draw(this.ctx);
     };
-
-    /*
-     **LaunchGame
-     */
+	
+	Game.prototype.launch = function() {
+		var self = this;
+		setInterval(function() {
+            self.update();
+        }, 150);
+		
+		setInterval(function() {
+            self.draw();
+        }, 30);
+		this.stage.display();
+		var canvas = document.getElementById("riksCanvas");
+		canvas.style.zIndex = "100";
+	};
+	
+	Game.prototype.load = function(i) {
+		var img=new Image(),
+			self = this;
+		if (i<this.images.length) {
+			img.onload= function() { 
+				self.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+				self.ctx.fillText("Loading... " + truncate(self.percentageBar) + " %", CANVAS_WIDTH / 2 - 230, CANVAS_HEIGHT / 2);
+				self.percentageBar += 100/self.images.length;
+				//self.percentageBar += self.size(self.images[i]) * 100/self.totalImageSize;
+				self.load(i+1);
+			};
+			img.src=this.images[i];
+		}
+		else {
+			this.launch();
+		}
+	};
+	
+	/*Game.prototype.size = function(src) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('HEAD', src, true);
+		xhr.onreadystatechange = function() {
+			if(xhr.readyState == 4) {
+				if(xhr.status == 200) {
+					return parseInt(xhr.getResponseHeader('Content-Length'));
+				}
+				else {
+					return 0;
+				}
+			}
+		};
+		xhr.send(null);
+	};*/
+	
     window.onload = function() {
         new Game();
     };
+	
+	function truncate(n) {
+		return Math[n > 0 ? "floor" : "ceil"](n);
+	};
 
 })();
