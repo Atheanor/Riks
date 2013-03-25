@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *{
 	margin: 0;
 	padding: 0;
@@ -6,4 +7,18 @@
 body {
 	overflow: hidden;
 	font-family: Georgia, sans-serif;
+=======
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    overflow: hidden;
+    font-family: Georgia, sans-serif;
+}
+
+canvas{
+    background-color: grey;
+>>>>>>> ecb9cff70afc189bcd22dd8ad78e3465c15bd757
 }
