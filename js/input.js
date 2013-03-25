@@ -7,44 +7,126 @@
 
 "use strict";
 
-function Input(character) {
-    this.character = character;
+function Input(characterOne, characterTwo) {
+    this.characterOne = characterOne;
+    this.characterTwo = characterTwo;
+    this.profiles = {
+        profileOne: {
+            character: this.characterOne,
+            keyCodes: {
+                up: [87, 90], //W Z
+                down: [83], //S
+                left: [65, 81], //Q A
+                right: [68], //D
+                actionOne: [69],
+                actionTwo: [82]
+            }
+        },
+        profileTwo: {
+            character: this.characterTwo,
+            keyCodes: {
+                up: [38],
+                down: [40],
+                left: [37],
+                right: [39],
+                actionOne: [1], //todo
+                actionTwo: [2]//todo
+            }
+        }
+    };
     this.eval();
 }
 
+Input.prototype.doAction = function(event, type, character) {
+    switch (event.type) {
+        case 'keydown' :
+            switch (type) {
+                case 'up' :
+                    character.direction = type;
+                    character.isMoving = true;
+                    break;
+                case 'down' :
+                    character.direction = type;
+                    character.isMoving = true;
+                    break;
+                case 'left' :
+                    character.direction = type;
+                    character.isMoving = true;
+                    break;
+                case 'right' :
+                    character.direction = type;
+                    character.isMoving = true;
+                    break;
+                case 'actionOne' :
+                    character.direction = type;
+                    character.isMoving = true;
+                    break;
+                case 'actionTwo' :
+                    character.direction = type;
+                    character.isMoving = true;
+                    break;
+            }
+            break;
+            
+        case 'keyup' :
+            switch (type) {
+                case 'up' :
+
+                    break;
+                case 'down' :
+
+                    break;
+                case 'left' :
+
+                    break;
+                case 'right' :
+
+                    break;
+                case 'actionOne' :
+
+                    break;
+                case 'actionTwo' :
+
+                    break;
+            }
+            break;
+    }
+};
+
 Input.prototype.eval = function() {
-    // TODO: Do something better because it's block firefox with gamepad, 
-    // you need to verify if gamepas api is supported and if a gamepad is connected
-    // 
     if (Gamepad.supported) {
         this.gamepadListener();
     }
-	else {
-        this.keyListener();
-    }
+    this.keyListener();
 };
 
 Input.prototype.keyListener = function() {
     var self = this;
-    document.onkeydown = function(event) {
-		switch (event.keyCode) {
-			/* left */
-			case 37 :
-				self.character.direction = "left";
-				self.character.isMoving = true;
-				break;
-
-			/* right */
-			case 39 :
-				self.character.direction = "right";
-				self.character.isMoving = true;
-				break;
-				
-			default:
-				break;
-		}
-    };
+    document.onkeydown = function(event){keyEvent(self, event);};
+    document.onkeyup = function(event){keyEvent(self, event);};
 };
+
+function keyEvent(self, event) {
+    var keyCode = event.keyCode;
+    for (var i in self.profiles) {
+        var profile = self.profiles[i];
+        var keys = self.profiles[i].keyCodes;
+        for (var j in keys) {
+            var keysLength = keys[j].length;
+            for (var k = 0; k < keysLength; k++) {
+                if (keys[j][k] === keyCode) {
+                    if (profile.character) {
+                        self.doAction(event, j, profile.character);
+                    }
+                    break;
+                }
+            }
+
+        }
+    }
+}
+
+
 
 Input.prototype.gamepadListener = function() {
     var self = this;
@@ -55,7 +137,7 @@ Input.prototype.gamepadListener = function() {
                     window.mozRequestAnimationFrame ||
                     window.oRequestAnimationFrame ||
                     window.msRequestAnimationFrame ||
-                    function(/* function FrameRequestCallback */callback, /* DOMElement Element */element) {
+                    function(callback, element) {
                         window.setTimeout(callback, 1000 / 60);
                     };
         })();
@@ -91,11 +173,11 @@ Input.prototype.gamepadListener = function() {
             if (pad) {
                 if (pad.leftStickX < -0.5) {
                     self.character.direction = "left";
-					self.character.isMoving = true;
+                    self.character.isMoving = true;
                 }
                 if (pad.leftStickX > 0.5) {
                     self.character.direction = "right";
-					self.character.isMoving = true;
+                    self.character.isMoving = true;
                 }
             }
         }
