@@ -10,21 +10,21 @@ function CharacterMenu(characters) {
     var _time = 60; // Second
 
     Object.defineProperties(this, {
-        time: {
-            get: function() {
+        time:{
+            get:function () {
                 return _time;
             },
-            set: function(time) {
+            set:function (time) {
                 _time = time;
             }
         }
     });
 }
 
-CharacterMenu.prototype.update = function() {
+CharacterMenu.prototype.update = function () {
 
 };
 
-CharacterMenu.prototype.draw = function(context) {
+CharacterMenu.prototype.draw = function (context) {
 
 };

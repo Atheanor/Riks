@@ -13,6 +13,5 @@
         this.characterTwo = characterTwo;
     }
 
-    Collision.prototype.update = function() {
-    };
+    Collision.prototype.update = function() {};
 });

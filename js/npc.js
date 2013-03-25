@@ -14,7 +14,7 @@ function Npc() {
 
 Npc.prototype = Object.create(Character.prototype);
 
-Npc.prototype.update = function() {
+Npc.prototype.update = function () {
 
 };
 

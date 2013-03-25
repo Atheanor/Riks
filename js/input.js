@@ -19,7 +19,7 @@ Input.prototype.eval = function() {
     if (Gamepad.supported) {
         this.gamepadListener();
     }
-    else {
+	else {
         this.keyListener();
     }
 };
@@ -27,22 +27,22 @@ Input.prototype.eval = function() {
 Input.prototype.keyListener = function() {
     var self = this;
     document.onkeydown = function(event) {
-        switch (event.keyCode) {
-            /* left */
-            case 37 :
-                self.character.direction = "left";
-                self.character.isMoving = true;
-                break;
+		switch (event.keyCode) {
+			/* left */
+			case 37 :
+				self.character.direction = "left";
+				self.character.isMoving = true;
+				break;
 
-                /* right */
-            case 39 :
-                self.character.direction = "right";
-                self.character.isMoving = true;
-                break;
-
-            default:
-                break;
-        }
+			/* right */
+			case 39 :
+				self.character.direction = "right";
+				self.character.isMoving = true;
+				break;
+				
+			default:
+				break;
+		}
     };
 };
 
@@ -91,11 +91,11 @@ Input.prototype.gamepadListener = function() {
             if (pad) {
                 if (pad.leftStickX < -0.5) {
                     self.character.direction = "left";
-                    self.character.isMoving = true;
+					self.character.isMoving = true;
                 }
                 if (pad.leftStickX > 0.5) {
                     self.character.direction = "right";
-                    self.character.isMoving = true;
+					self.character.isMoving = true;
                 }
             }
         }
