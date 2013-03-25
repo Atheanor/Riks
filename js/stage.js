@@ -64,73 +64,33 @@ Stage.prototype.display = function() {
 };
 
 Stage.prototype.update = function(charaOne, charaTwo) {
+	// We assure that the first character is the left one
 	if(charaOne.positionX > charaTwo.positionX) {
+		// If not
 		this.update(charaTwo,charaOne);
-	}
-	else {
-		var margin = 10,
-			screenWidth = window.innerWidth,
-			foregroundPosX = this.foreground.offsetLeft,
+	} else {
+		var margin = 60, // Margin needed between a character and the screen
+			screenWidth = window.innerWidth, // Width of the canvas displayed
+			foregroundPosX = this.foreground.offsetLeft, 
 			backgroundPosX = this.background.offsetLeft;
 			
-		if(charaOne.positionX <= margin && 
-		charaTwo.positionX + charaTwo.width + margin < screenWidth &&
-		foregroundPosX < 0) {
+		if(charaOne.positionX <= margin && // The left character is moving close to the left border of the screen
+		charaTwo.positionX + charaTwo.width + margin + 10 < screenWidth && // Checking if the right one isn't blocking the other side
+		foregroundPosX < -(margin)) { // The left border of the foreground has to be at a little distance from the left border of the canvas
 			//Scroll Left
 			foregroundPosX += 30;
-			backgroundPosX += 5;
+			backgroundPosX += 6;
 			charaTwo.positionX += 30;
-		} 
-		else if(charaTwo.positionX + charaTwo.width + margin >= screenWidth && 
-		charaOne.positionX > margin &&
-		foregroundPosX > -(2*window.innerWidth)) {	
+		}
+		else if(charaTwo.positionX + charaTwo.width + margin >= screenWidth && // The right character is moving close to the right border
+		charaOne.positionX > margin + 10 && // While the left character is not blocking the other border
+		foregroundPosX - margin > -(screenWidth)) { // The right of the foreground has to be a margin away from the right of the canvas
 			//Scroll Right
 			foregroundPosX -= 30;
-			backgroundPosX -= 5;
+			backgroundPosX -= 6;
 			charaOne.positionX -= 30;
 		}
 		this.foreground.style.left = (foregroundPosX).toString() + "px";
 		this.background.style.left = (backgroundPosX).toString() + "px";
 	}
 };
-
-/*Stage.prototype.draw = function (context) {
-
-	//BACKGROUND
-    context.drawImage(this.background, //Image read
-	
-	//Position where we start readind the image
-	0, //X
-	0, //Y
-					  
-	//Width and height of what's read in the image
-	this.background.width,
-	this.background.height, 
-					  
-	//Where we display the image on the canvas
-	0, //X
-	0, //Y
-					  
-	//Dimensions of the image displayed
-	window.innerWidth*2, 
-	window.innerHeight);
-	
-	//FOREGROUND
-	context.drawImage(this.foreground, //Image read
-	
-	//Position where we start readind the image
-	0, //X
-	0, //Y
-					  
-	//Width and height of what's read in the image
-	this.foreground.width, 
-	this.foreground.height, 
-					  
-	//Where we display the image on the canvas
-	0, //X
-	window.innerHeight*5/6, //Y
-					  
-	//Dimensions of the image displayed
-	window.innerWidth*2, 
-	window.innerHeight/6);
-};*/
