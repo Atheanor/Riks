@@ -51,10 +51,12 @@ Input.prototype.doAction = function(event, type, character) {
                     break;
                 case 'left' :
                     character.direction = type;
+                    character.animation.moveLeft();
                     character.isMoving = true;
                     break;
                 case 'right' :
                     character.direction = type;
+                    character.animation.moveRight();
                     character.isMoving = true;
                     break;
                 case 'actionOne' :
@@ -77,10 +79,12 @@ Input.prototype.doAction = function(event, type, character) {
 
                     break;
                 case 'left' :
-
+                    character.animation.wait();
+                    character.isMoving = false;
                     break;
                 case 'right' :
-
+                    character.animation.wait();
+                    character.isMoving = false;
                     break;
                 case 'actionOne' :
 

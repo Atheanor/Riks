@@ -31,7 +31,7 @@
 
     Game.prototype.initGame = function() {
         this.characterOne = new Character('Ryu', 0.7);
-        this.characterTwo = new Character('Ryu', 0.7);
+        this.characterTwo = new Character('Ken', 0.7);
         this.characterOne.positionX = 200;
         this.characterTwo.positionX = 800;
         this.stage = new Stage('test');

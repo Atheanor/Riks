@@ -7,7 +7,7 @@
 
 "use strict";
 
-function Character(name, ratio) {
+function Character(name, ratio, animation) {
     var _name = name,
 		_img = new Image(),
         _spriteX = 0,
@@ -25,7 +25,8 @@ function Character(name, ratio) {
         _movement = new Movement(),
         _movementDone = true,
         _combo,
-        _handicap;
+        _handicap,
+        _animation = animation;
 
     Object.defineProperties(this, {
         name:{
@@ -184,46 +185,37 @@ function Character(name, ratio) {
             set:function (handicap) {
                 _handicap = handicap;
             }
+        },
+        animation:{
+            get:function () {
+                return _animation;
+            },
+            set:function (animation) {
+                _animation = animation;
+            }
         }
     });
 	this.img.src = "./img/sprites/"+this.name+".png";
+    this.initAnimation();
 }
 
-Character.prototype.moveLeft = function() {
-    if(this.positionX>0) {
-		this.positionX -= 30;
-	}
-	this.doMovement(this.movement.walkLeft);
-};
-
-Character.prototype.moveRight = function() {
-	if(this.positionX+this.width<window.innerWidth) {
-		this.positionX += 30;
-	}
-    this.doMovement(this.movement.walkRight);
-};
-
-Character.prototype.wait = function() {
-	if(this.direction == "right") {
-		this.doMovement(this.movement.waitRight);
-	}
-	else {
-		this.doMovement(this.movement.waitLeft);
-	}
+Character.prototype.initAnimation = function()
+{
+    this.animation = new Animation(this);
 };
 
 Character.prototype.update = function() {
     if(!this.isMoving) {
-		this.wait();
+		this.animation.wait();
     }
 	else {
-		if(this.direction == "right") {
+		/*if(this.direction == "right") {
 			this.moveRight();
 		}
 		else {
 			this.moveLeft();
 		}
-		this.isMoving = false;
+		this.isMoving = false;*/
 	}
 };
 
@@ -232,15 +224,6 @@ Character.prototype.draw = function(context) {
 	this.widthSprite, this.heightSprite, this.positionX, this.positionY, this.width, this.height);
 };
 
-Character.prototype.doMovement = function(movement) {
-	if(this.spriteX < movement[0] + movement[2] - 1 && this.spriteX >= movement[0]) {
-		this.spriteX++;
-	}
-	else {
-		this.spriteX = movement[0];
-        this.spriteY = movement[1];
-	}
-};
 
 // NOTE : Code to flip image to draw below
 // ctx.translate(img.width-1, img.height-1);

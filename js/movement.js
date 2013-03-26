@@ -14,7 +14,9 @@ function Movement() {
 	var	_waitRight = [],
 		_walkRight = [],
 		_waitLeft = [],
-		_walkLeft = [];
+		_walkLeft = [],
+        _jumpRight = [],
+        _jumpLeft = [];
 		
 	Object.defineProperties(this, {
 		waitRight:{
@@ -33,6 +35,14 @@ function Movement() {
                 _walkRight = walkRight;
             }
         },
+        jumpRight:{
+            get:function () {
+                return _jumpRight;
+            },
+            set:function (jumpRight) {
+                _jumpRight = jumpRight;
+            }
+        },
 		waitLeft:{
             get:function () {
                 return _waitLeft;
@@ -48,6 +58,14 @@ function Movement() {
             set:function (walkLeft) {
                 _walkLeft = walkLeft;
             }
+        },
+        jumpLeft:{
+            get:function () {
+                return _jumpLeft;
+            },
+            set:function (jumpLeft) {
+                _jumpLeft = jumpLeft;
+            }
         }
 	});
 	var _init = this.initMovement();
@@ -59,4 +77,6 @@ Movement.prototype.initMovement = function () {
 	this.waitLeft = [5,0,4];
 	this.walkRight = [0,1,4];
 	this.walkLeft = [5,1,4];
+    this.jumpLeft = [24,0,6];
+    this.jumpRight = [18,0,6];
 };
