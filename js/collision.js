@@ -5,13 +5,20 @@
  * 126752 Germain Chapot
  */
 
-(function() {
-    "use strict";
+"use strict";
 
-    function Collision(characterOne, characterTwo) {
-        this.characterOne = characterOne;
-        this.characterTwo = characterTwo;
-    }
+function Collision() {}
 
-    Collision.prototype.update = function() {};
-});
+Collision.prototype.update = function(characterOne, characterTwo) {
+	characterOne.blockedLeft = false;
+	characterOne.blockedRight = false;
+	characterTwo.blockedLeft = false;
+	characterTwo.blockedRight = false;
+	if(characterOne.positionX+characterOne.width > characterTwo.positionX && characterOne.positionX < characterTwo.positionX) {
+		characterOne.blockedRight = true;
+		characterTwo.blockedLeft = true;
+	} else if(characterTwo.positionX+characterTwo.width > characterOne.positionX && characterTwo.positionX < characterOne.positionX) {
+		characterOne.blockedLeft = true;
+		characterTwo.blockedRight = true;
+	}
+};

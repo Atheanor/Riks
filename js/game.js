@@ -66,6 +66,7 @@
         this.characterOne.positionX = 200;
         this.characterTwo.positionX = 800;
         this.stage = new Stage('test');
+		this.collision = new Collision();
         new Input(this.characterOne, this.characterTwo);
         this.images = [
 			"./img/sprites/" + this.characterOne.name + ".png",
@@ -89,6 +90,7 @@
     };
 
     Game.prototype.update = function() {
+		this.collision.update(this.characterOne, this.characterTwo);
         this.characterOne.update();
         this.characterTwo.update();
         this.stage.update(this.characterOne, this.characterTwo);

@@ -14,6 +14,8 @@ function Character(name, ratio, animation) {
         _spriteY = 0,
         _isMoving = false,
 		_direction = "right",
+		_blockedLeft = false,
+		_blockedRight = false,
         _life = 100,
         _weight = 60,
         _widthSprite = 485,
@@ -104,6 +106,22 @@ function Character(name, ratio, animation) {
             },
             set:function (direction) {
                 _direction = direction;
+            }
+        },
+		blockedLeft:{
+            get:function () {
+                return _blockedLeft;
+            },
+            set:function (blockedLeft) {
+                _blockedLeft = blockedLeft;
+            }
+        },
+		blockedRight:{
+            get:function () {
+                return _blockedRight;
+            },
+            set:function (blockedRight) {
+                _blockedRight = blockedRight;
             }
         },
         life:{
@@ -222,6 +240,8 @@ Character.prototype.update = function() {
 Character.prototype.draw = function(context) {
     context.drawImage(this.img, this.widthSprite * this.spriteX, this.heightSprite * this.spriteY, 
 	this.widthSprite, this.heightSprite, this.positionX, this.positionY, this.width, this.height);
+	context.strokeStyle = "red";
+	context.strokeRect(this.positionX, this.positionY, this.width, this.height);
 };
 
 
