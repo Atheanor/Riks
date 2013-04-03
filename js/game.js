@@ -19,6 +19,38 @@
             self.initGame();
         };
     }
+	
+	/*Game.prototype.loadInit = function(i) {
+		var imgReq = new XMLHttpRequest(), self = this;
+		if(typeof(i)==='undefined') i = 0;
+		if(i < this.images.length)
+		{
+			imgReq.open("GET", this.images[i], true);
+			imgReq.responseType = "arraybuffer";
+			imgReq.onload = function (oEvent) {
+				var arrayBuffer = imgReq.response;
+				if (arrayBuffer) {
+					var byteArray = new Uint8Array(arrayBuffer);
+					self.imagesBuffer[i] = byteArray;
+					for(var j=0;j<self.imagesBuffer[i].byteLength;j++) {
+						self.totalImageSize += self.imagesBuffer[i][j];
+					}
+					self.loadInit(i + 1);
+				}
+			};
+			imgReq.send();
+		} else {
+			this.index = 0;
+			this.imgIndex = 0;
+			this.loadingAction = setInterval(function() {
+				if(self.index < self.imagesBuffer[self.imgIndex].byteLength) {
+					self.updateLoading(self.imgIndex,self.index);
+					self.index++;
+				}
+			}, 100);
+			this.loadImage();
+		}
+    };*/
 
     Game.prototype.initCanvas = function() {
         var canvas = document.getElementById("riksCanvas");
@@ -26,7 +58,6 @@
         canvas.height = CANVAS_HEIGHT;
         this.ctx = canvas.getContext('2d');
         this.ctx.font = "50pt Times";
-        this.ctx.fillStyle = 'black';
     };
 
     Game.prototype.initGame = function() {
@@ -36,19 +67,25 @@
         this.characterTwo.positionX = 800;
         this.stage = new Stage('test');
         new Input(this.characterOne, this.characterTwo);
-        this.images =
-                [
-                    "./img/sprites/" + this.characterOne.name + ".png",
-                    "./img/backgrounds/" + this.stage.name + ".jpg",
-                    "./img/foregrounds/" + this.stage.name + ".jpg"
-                ];
+        this.images = [
+			"./img/sprites/" + this.characterOne.name + ".png",
+			"./img/sprites/" + this.characterTwo.name + ".png",
+			"./img/backgrounds/" + this.stage.name + ".jpg",
+			"./img/foregrounds/" + this.stage.name + ".jpg"
+		];
+		//this.imagesBuffer = [];
         this.percentageBar = 0;
-        /*this.totalImageSize = 0;
-         for(var i=0;i<this.images.length;i++) {
-         this.totalImageSize += this.size(this.images[i]);
-         console.log(this.size(this.images[i]));
-         }*/
-        this.load(0);
+        //this.totalImageSize = 0;
+		//this.totalLoaded = 0;
+		var self = this;
+		this.loadingScreen = setInterval(function() {
+			self.displayLoadingScreen();
+			if(self.percentageBar == 100) {
+				self.launch();
+			}
+		},50);
+		//this.loadInit();
+		this.loadImage();
     };
 
     Game.prototype.update = function() {
@@ -64,6 +101,8 @@
     };
 
     Game.prototype.launch = function() {
+		clearInterval(this.loadingScreen);
+		clearInterval(this.loadingAction);
         var self = this;
         setInterval(function() {
             self.update();
@@ -76,40 +115,38 @@
         var canvas = document.getElementById("riksCanvas");
         canvas.style.zIndex = "100";
     };
+	
+	/*Game.prototype.updateLoading = function(j) {
+		var bufferAdded = 0;
+		if(this.currentImageBuffer[j] > 0) {
+			bufferAdded += this.currentImageBuffer[j];
+		}
+		this.totalLoaded += bufferAdded;
+		this.percentageBar = this.totalLoaded*100/this.totalImageSize;
+	};*/
 
-    Game.prototype.load = function(i) {
-        var img = new Image(),
-                self = this;
+    Game.prototype.loadImage = function(i) {
+        var img = new Image(), self = this;
+		if(typeof(i)==='undefined') i = 0;
         if (i < this.images.length) {
             img.onload = function() {
-                self.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-                self.ctx.fillText("Loading... " + truncate(self.percentageBar) + " %", CANVAS_WIDTH / 2 - 230, CANVAS_HEIGHT / 2);
-                self.percentageBar += 100 / self.images.length;
-                //self.percentageBar += self.size(self.images[i]) * 100/self.totalImageSize;
-                self.load(i + 1);
+				//self.currentImageBuffer = self.imagesBuffer[i+1];
+				//self.imgIndex = i+1;
+				//self.index = 0;
+                self.loadImage(i+1);
+				self.percentageBar += 100/self.images.length;
             };
             img.src = this.images[i];
         }
-        else {
-            this.launch();
-        }
     };
-
-    /*Game.prototype.size = function(src) {
-     var xhr = new XMLHttpRequest();
-     xhr.open('HEAD', src, true);
-     xhr.onreadystatechange = function() {
-     if(xhr.readyState == 4) {
-     if(xhr.status == 200) {
-     return parseInt(xhr.getResponseHeader('Content-Length'));
-     }
-     else {
-     return 0;
-     }
-     }
-     };
-     xhr.send(null);
-     };*/
+	
+	Game.prototype.displayLoadingScreen = function() {
+		this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+		this.ctx.fillStyle = 'black';
+		this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+		this.ctx.fillStyle = 'white';
+        this.ctx.fillText("Loading... " + truncate(this.percentageBar) + " %", CANVAS_WIDTH / 2 - 230, CANVAS_HEIGHT / 2);
+	};
 
     window.onload = function() {
         new Game();
@@ -118,6 +155,5 @@
     function truncate(n) {
         return Math[n > 0 ? "floor" : "ceil"](n);
     }
-    ;
 
 })();
